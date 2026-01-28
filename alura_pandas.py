@@ -1,8 +1,11 @@
 import pandas
 
 data = pandas.read_csv("https://raw.githubusercontent.com/guilhermeonrails/data-jobs/refs/heads/main/salaries.csv")
-#print(data.columns) #Check names of columns
-#print(data["remote_ratio"].value_counts()) #Test
+
+test = 0 #Test mode
+if test == 1:
+    print(data.columns) #Check names of columns
+    print(data["remote_ratio"].value_counts())
 
 experience_level = {
     "SE": "Senior",
@@ -44,21 +47,49 @@ def data_verification():
         except ValueError:
             print("Invalid value")
 
-while True: #Main menu
-    print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
-    print("5- Show data count \n6- Finish program")
-    option = data_verification()
+#Before cleaning the data
+test = 1 #Test mode
+if test == 1:
+    while True: #Main menu
+        print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
+        print("5- Show data count \n6- Finish program")
+        option = data_verification()
 
-    if option == 1: #Experience level
-        print("\n", data["experience_level"].value_counts())
-    elif option == 2: #Employment type
-        print("\n", data["employment_type"].value_counts())
-    elif option == 3: #Company size
-        print("\n", data["company_size"].value_counts())
-    elif option == 4: #Remote ration
-        print("\n", data["remote_ratio"].value_counts())
-    elif option == 5:
-        print("\n", data.describe(include = "object"))
-    elif option == 6:
-        print("Ending program...")
-        break
+        if option == 1: #Experience level
+            print("\n", data["experience_level"].value_counts())
+        elif option == 2: #Employment type
+            print("\n", data["employment_type"].value_counts())
+        elif option == 3: #Company size
+            print("\n", data["company_size"].value_counts())
+        elif option == 4: #Remote ration
+            print("\n", data["remote_ratio"].value_counts())
+        elif option == 5: #Data count
+            print("\n", data.describe(include = "object"))
+        elif option == 6: #Finish program
+            print("Ending program...")
+            break
+
+data_cleaned = data.dropna()
+data_cleaned = data_cleaned.assign(work_year = data_cleaned["work_year"].astype("int64"))
+
+#After cleaning the data
+test = 1 #Test mode
+if test == 1:
+    while True: #Main menu
+        print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
+        print("5- Show data count \n6- Finish program")
+        option = data_verification()
+
+        if option == 1: #Experience level
+            print("\n", data_cleaned["experience_level"].value_counts())
+        elif option == 2: #Employment type
+            print("\n", data_cleaned["employment_type"].value_counts())
+        elif option == 3: #Company size
+            print("\n", data_cleaned["company_size"].value_counts())
+        elif option == 4: #Remote ration
+            print("\n", data_cleaned["remote_ratio"].value_counts())
+        elif option == 5: #Data count
+            print("\n", data_cleaned.describe(include = "object"))
+        elif option == 6: #Finish program
+            print("Ending program...")
+            break
