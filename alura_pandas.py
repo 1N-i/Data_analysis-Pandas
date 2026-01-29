@@ -37,23 +37,23 @@ remote_ratio = {
 }
 data["remote_ratio"] = data["remote_ratio"].replace(remote_ratio)
 
-def data_verification():
+def data_verification(max):
     while True:
         try:
             i = int(input("Option: "))
-            if 6 >= i >= 1:
+            if max >= i >= 1:
                 return i
             raise ValueError
         except ValueError:
             print("Invalid value")
 
 #Before cleaning the data
-test = 1 #Test mode
+test = 0 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
         print("5- Show data count \n6- Finish program")
-        option = data_verification()
+        option = data_verification(6)
 
         if option == 1: #Experience level
             print("\n", data["experience_level"].value_counts())
@@ -73,12 +73,12 @@ data_cleaned = data.dropna()
 data_cleaned = data_cleaned.assign(work_year = data_cleaned["work_year"].astype("int64"))
 
 #After cleaning the data
-test = 1 #Test mode
+test = 0 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
         print("5- Show data count \n6- Finish program")
-        option = data_verification()
+        option = data_verification(6)
 
         if option == 1: #Experience level
             print("\n", data_cleaned["experience_level"].value_counts())
@@ -93,3 +93,36 @@ if test == 1:
         elif option == 6: #Finish program
             print("Ending program...")
             break
+
+test = 0
+if test == 1: #Bar graph
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    ordered = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending = False).index
+    plt.figure(figsize = (8, 5))
+    sns.barplot(data = data_cleaned, x = "experience_level", y = "salary_in_usd", order = ordered)
+    plt.title("Distribuition of experience level")
+    plt.xlabel("Experience Level")
+    plt.ylabel("Mean salary yearly (USD)")
+    plt.show()
+
+test = 0
+if test == 1: #Histogram
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    plt.figure(figsize = (8, 4))
+    sns.histplot(data_cleaned["salary_in_usd"], bins = 50, kde = True)
+    plt.title("Distribuition of yearly salary")
+    plt.xlabel("Salary (USD)")
+    plt.ylabel("Frequency")
+    plt.show()
+
+test = 1
+if test == 1: #Boxplot
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    plt.figure(figsize = (8, 5))
+    sns.boxplot(x = data_cleaned["salary_in_usd"])
+    plt.title("Distribuition of yearly salary")
+    plt.xlabel("Salary (USD)")
+    plt.show()
