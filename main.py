@@ -50,8 +50,8 @@ test = 1 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
-        print("5- Show data count \n6- Finish program")
-        option = data_verification(6)
+        print("5- Show data count \n6- See graph \n7- Finish program")
+        option = data_verification(7)
 
         if option == 1: #Experience level
             print("\n", data_cleaned["experience_level"].value_counts())
@@ -63,6 +63,88 @@ if test == 1:
             print("\n", data_cleaned["remote_ratio"].value_counts())
         elif option == 5: #Data count
             print("\n", data_cleaned.describe(include = "object"))
-        elif option == 6: #Finish program
+        elif option == 6:
+            import matplotlib.pyplot as plt
+            import seaborn as sns
+            import plotly.express as px
+            while True:
+                option2 = data_verification(7)
+                if option2 == 1: #Bar graph
+                    ordered = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending = False).index
+                    plt.figure(figsize = (8, 5))
+                    sns.barplot(data = data_cleaned, x = "experience_level", y = "salary_in_usd", order = ordered)
+                    plt.title("Distribuition of experience level")
+                    plt.xlabel("Experience Level")
+                    plt.ylabel("Mean salary yearly (USD)")
+                    plt.show()
+                
+                elif option2 == 2: #Histogram
+                    plt.figure(figsize = (8, 4))
+                    sns.histplot(data_cleaned["salary_in_usd"], bins = 50, kde = True)
+                    plt.title("Distribuition of yearly salary")
+                    plt.xlabel("Salary (USD)")
+                    plt.ylabel("Frequency")
+                    plt.show()
+
+                elif option2 == 3: #Boxplot
+                    plt.figure(figsize = (8, 5))
+                    sns.boxplot(x = data_cleaned["salary_in_usd"])
+                    plt.title("Distribuition of yearly salary")
+                    plt.xlabel("Salary (USD)")
+                    plt.show()
+        elif option == 7: #Finish program
             print("Ending program...")
             break
+
+
+
+test = 0
+if test == 1: #Boxplot 2
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    ordered = ["Senior", "Mid-level", "Junior", "Executive"]
+    plt.figure(figsize = (8, 5))
+    sns.boxplot(x="experience_level", y="salary_in_usd", data=data_cleaned, order=ordered, palette="Set2", hue = "experience_level")
+    plt.title("Distribuition of yearly salary per experience level")
+    plt.xlabel("Experience level")
+    plt.ylabel("Salary (USD)")
+    plt.show()
+
+test = 0
+if test == 1: #Plotly bar graph
+    import plotly.express as px
+    graph = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending=False).reset_index()
+
+    figure = px.bar(graph,
+                    x = "experience_level",
+                    y = "salary_in_usd",
+                    title = "Mean salary by experience level",
+                    labels = {"experience_level": "Experience level", "salary_in_usd": "Mean yearly salary (USD)"})
+    figure.show()
+
+test = 0
+if test == 1: #Plotly pie graph
+    import plotly.express as px
+    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+    graph.columns = ["Type of work", "Quantity"]
+
+    figure = px.pie(graph,
+                    names = "Type of work",
+                    values = "Quantity",
+                    title = "Proportion of work types"
+                    )
+    figure.show()
+
+test = 0
+if test == 1: #Plotly donut graph
+    import plotly.express as px
+    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+    graph.columns = ["Type of work", "Quantity"]
+
+    figure = px.pie(graph,
+                    names = "Type of work",
+                    values = "Quantity",
+                    title = "Proportion of work types",
+                    hole = 0.5)
+    figure.update_traces(textinfo = "percent+label")
+    figure.show()

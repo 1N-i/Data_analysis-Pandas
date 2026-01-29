@@ -127,14 +127,57 @@ if test == 1: #Boxplot
     plt.xlabel("Salary (USD)")
     plt.show()
 
-test = 1
+test = 0
 if test == 1: #Boxplot 2
     import matplotlib.pyplot as plt
     import seaborn as sns
     ordered = ["Senior", "Mid-level", "Junior", "Executive"]
     plt.figure(figsize = (8, 5))
-    sns.boxplot(x = "experience_level", y = "salary_in_usd", data = data_cleaned, order = ordered)
+    sns.boxplot(x="experience_level", y="salary_in_usd", data=data_cleaned, order=ordered, palette="Set2", hue = "experience_level")
     plt.title("Distribuition of yearly salary per experience level")
     plt.xlabel("Experience level")
     plt.ylabel("Salary (USD)")
     plt.show()
+
+test = 0
+if test == 1: #Plotly bar graph
+    import plotly.express as px
+    graph = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending=False).reset_index()
+
+    figure = px.bar(graph,
+                    x = "experience_level",
+                    y = "salary_in_usd",
+                    title = "Mean salary by experience level",
+                    labels = {"experience_level": "Experience level", "salary_in_usd": "Mean yearly salary (USD)"})
+    figure.show()
+
+test = 0
+if test == 1: #Plotly pie graph
+    import plotly.express as px
+    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+    graph.columns = ["Type of work", "Quantity"]
+
+    figure = px.pie(graph,
+                    names = "Type of work",
+                    values = "Quantity",
+                    title = "Proportion of work types"
+                    )
+    figure.show()
+
+test = 0
+if test == 1: #Plotly donut graph
+    import plotly.express as px
+    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+    graph.columns = ["Type of work", "Quantity"]
+
+    figure = px.pie(graph,
+                    names = "Type of work",
+                    values = "Quantity",
+                    title = "Proportion of work types",
+                    hole = 0.5)
+    figure.update_traces(textinfo = "percent+label")
+    figure.show()
+
+#pip install matplotlib
+#pip install seaborn
+#pip install plotly
