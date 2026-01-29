@@ -117,7 +117,7 @@ if test == 1: #Histogram
     plt.ylabel("Frequency")
     plt.show()
 
-test = 1
+test = 0
 if test == 1: #Boxplot
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -125,4 +125,16 @@ if test == 1: #Boxplot
     sns.boxplot(x = data_cleaned["salary_in_usd"])
     plt.title("Distribuition of yearly salary")
     plt.xlabel("Salary (USD)")
+    plt.show()
+
+test = 1
+if test == 1: #Boxplot 2
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    ordered = ["Senior", "Mid-level", "Junior", "Executive"]
+    plt.figure(figsize = (8, 5))
+    sns.boxplot(x = "experience_level", y = "salary_in_usd", data = data_cleaned, order = ordered)
+    plt.title("Distribuition of yearly salary per experience level")
+    plt.xlabel("Experience level")
+    plt.ylabel("Salary (USD)")
     plt.show()

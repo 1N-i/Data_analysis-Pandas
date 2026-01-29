@@ -16,7 +16,7 @@ data_salary = pandas.DataFrame({
     "salary": [4000, nan, 5000, nan, 10000]
     })
 
-test = 1 #Test mode
+test = 0 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Substitute 'nan' for the mean value \n2- Substitute 'nan' for the median value \n3- Finish program")
@@ -37,7 +37,7 @@ data_temperatures = pandas.DataFrame({
     "temperature": [30, nan, nan, 28, 27]
     })
 
-test = 1 #Test mode
+test = 0 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Substitute 'nan' for the last value \n2- Substitute 'nan' for the next value \n3- Finish program")
@@ -58,7 +58,7 @@ data_city = pandas.DataFrame({
     "city": ["São Paulo", nan, "Curitiba", nan, "Belém"]
 })
 
-test = 1 #Test mode
+test = 0 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Substitute 'nan' for 'No information' \n2- Finish program")
