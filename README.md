@@ -1,7 +1,9 @@
 # Data analysis with Pandas
 
-##Installs
-- pip
+## Installs
+- pip install matplotlib
+- pip install seaborn
+- pip install plotly
 
 ## To all archives
 - Change the test variable from 0 to 1 to test any menu or feature
