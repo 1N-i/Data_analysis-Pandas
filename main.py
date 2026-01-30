@@ -50,7 +50,7 @@ test = 1 #Test mode
 if test == 1:
     while True: #Main menu
         print("\n1- Show experience level \n2- Show employment type \n3- Show company size \n4- Show remote ratio")
-        print("5- Show data count \n6- See graph \n7- Finish program")
+        print("5- Show data count \n6- Pie graph \n7- Donut graph \n8- Close menu")
         option = data_verification(7)
 
         if option == 1: #Experience level
@@ -67,8 +67,11 @@ if test == 1:
             import matplotlib.pyplot as plt
             import seaborn as sns
             import plotly.express as px
+
             while True:
-                option2 = data_verification(7)
+                print("\n1- Bar graph \n2- Histogram \n3- Boxplot \n4- Boxplot 2")
+                print("5- Bar graph 2 \n6- See graphs \n7- Finish program")
+                option2 = data_verification(8)
                 if option2 == 1: #Bar graph
                     ordered = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending = False).index
                     plt.figure(figsize = (8, 5))
@@ -77,7 +80,6 @@ if test == 1:
                     plt.xlabel("Experience Level")
                     plt.ylabel("Mean salary yearly (USD)")
                     plt.show()
-                
                 elif option2 == 2: #Histogram
                     plt.figure(figsize = (8, 4))
                     sns.histplot(data_cleaned["salary_in_usd"], bins = 50, kde = True)
@@ -85,66 +87,49 @@ if test == 1:
                     plt.xlabel("Salary (USD)")
                     plt.ylabel("Frequency")
                     plt.show()
-
                 elif option2 == 3: #Boxplot
                     plt.figure(figsize = (8, 5))
                     sns.boxplot(x = data_cleaned["salary_in_usd"])
                     plt.title("Distribuition of yearly salary")
                     plt.xlabel("Salary (USD)")
                     plt.show()
-        elif option == 7: #Finish program
-            print("Ending program...")
-            break
-
-
-
-test = 0
-if test == 1: #Boxplot 2
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    ordered = ["Senior", "Mid-level", "Junior", "Executive"]
-    plt.figure(figsize = (8, 5))
-    sns.boxplot(x="experience_level", y="salary_in_usd", data=data_cleaned, order=ordered, palette="Set2", hue = "experience_level")
-    plt.title("Distribuition of yearly salary per experience level")
-    plt.xlabel("Experience level")
-    plt.ylabel("Salary (USD)")
-    plt.show()
-
-test = 0
-if test == 1: #Plotly bar graph
-    import plotly.express as px
-    graph = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending=False).reset_index()
-
-    figure = px.bar(graph,
+                elif option2 == 4: #Boxplot 2
+                    ordered = ["Senior", "Mid-level", "Junior", "Executive"]
+                    plt.figure(figsize = (8, 5))
+                    sns.boxplot(x="experience_level", y="salary_in_usd", data=data_cleaned, order=ordered, palette="Set2", hue = "experience_level")
+                    plt.title("Distribuition of yearly salary per experience level")
+                    plt.xlabel("Experience level")
+                    plt.ylabel("Salary (USD)")
+                    plt.show()
+                elif option2 == 5: #Plotly bar graph
+                    graph = data_cleaned.groupby("experience_level")["salary_in_usd"].mean().sort_values(ascending=False).reset_index()
+                    figure = px.bar(graph,
                     x = "experience_level",
                     y = "salary_in_usd",
                     title = "Mean salary by experience level",
                     labels = {"experience_level": "Experience level", "salary_in_usd": "Mean yearly salary (USD)"})
-    figure.show()
+                    figure.show()
+                elif option2 == 6: #Plotly pie graph
+                    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+                    graph.columns = ["Type of work", "Quantity"]
+                    figure = px.pie(graph,
+                                    names = "Type of work",
+                                    values = "Quantity",
+                                    title = "Proportion of work types")
+                    figure.show()
+                elif option2 == 7: #Plotly donut graph
+                    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
+                    graph.columns = ["Type of work", "Quantity"]
 
-test = 0
-if test == 1: #Plotly pie graph
-    import plotly.express as px
-    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
-    graph.columns = ["Type of work", "Quantity"]
-
-    figure = px.pie(graph,
-                    names = "Type of work",
-                    values = "Quantity",
-                    title = "Proportion of work types"
-                    )
-    figure.show()
-
-test = 0
-if test == 1: #Plotly donut graph
-    import plotly.express as px
-    graph = data_cleaned["remote_ratio"].value_counts().reset_index()
-    graph.columns = ["Type of work", "Quantity"]
-
-    figure = px.pie(graph,
-                    names = "Type of work",
-                    values = "Quantity",
-                    title = "Proportion of work types",
-                    hole = 0.5)
-    figure.update_traces(textinfo = "percent+label")
-    figure.show()
+                    figure = px.pie(graph,
+                                    names = "Type of work",
+                                    values = "Quantity",
+                                    title = "Proportion of work types",
+                                    hole = 0.5)
+                    figure.update_traces(textinfo = "percent+label")
+                    figure.show()
+                elif option2 == 8:
+                    break
+        elif option == 7: #Finish program
+            print("Ending program...")
+            break
